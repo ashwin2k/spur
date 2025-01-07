@@ -35,7 +35,7 @@ const ScheduleDetailPopup = ({
   const [selectedSuite, setSelectedSuite] = useState("Demo Suite");
   const [selectedTime, setSelectedTime] = useState("07:00");
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Sat"];
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const { toast } = useToast();
   const saveChanges = async () => {
