@@ -175,7 +175,7 @@ export const CalendarComponent = () => {
           </div>
         </div>
         <div className="flex mx-8 mb-4 overflow-y-scroll scrollbar-thin  scrollbar-thumb-gray-300 scrollbar-hide">
-          <div className="w-16 flex-shrink-0 mt-6">
+          <div className="w-16 flex-shrink-0 mt-6 bg-white z-50">
             <div className="text-sm text-gray-500 h-8 flex items-center">
               PST
             </div>
