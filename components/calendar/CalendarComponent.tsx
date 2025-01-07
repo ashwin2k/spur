@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Grid } from "lucide-react";
 import { Button } from "../ui/button";
+import ScheduleDetailPopup from "../dialogs/Schedule";
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => (
   <div className={`absolute inset-0 m-1 p-2 rounded ${event.color} text-xs`}>
@@ -90,7 +91,7 @@ export const CalendarComponent = () => {
     }
     return week;
   };
-
+  const [open, setOpen] = useState(true);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(
     null,
@@ -169,7 +170,7 @@ export const CalendarComponent = () => {
           animation: slideRight 300ms ease-in-out;
         }
       `}</style>
-
+      <ScheduleDetailPopup open={open} setOpen={setOpen} />
       <div className="flex flex-col w-full h-full">
         <div className="w-full h-16 border-b"></div>
         <div className="w-full max-w-6xl mx-auto p-4 bg-white">
@@ -199,7 +200,7 @@ export const CalendarComponent = () => {
             </div>
           </div>
         </div>
-        <div className="flex mx-8 mb-4 overflow-y-scroll">
+        <div className="flex mx-8 mb-4 overflow-y-scroll scrollbar-thin  scrollbar-thumb-gray-300 scrollbar-hide">
           <div className="w-16 flex-shrink-0 mt-6">
             <div className="text-sm text-gray-500 h-8 flex items-center">
               PST
@@ -214,9 +215,9 @@ export const CalendarComponent = () => {
             ))}
           </div>
           <div className="rounded flex-grow">
-            <div className="sticky top-0 z-50">
+            <div className="sticky top-0 z-50 border-b">
               <div
-                className={`grid grid-cols-7 border-b bg-gray-100 ${getSlideClass()}`}
+                className={`grid grid-cols-7 rounded-t-lg bg-gray-100 ${getSlideClass()}`}
               >
                 {weekDates.map((dateObj) => (
                   <div
