@@ -133,6 +133,16 @@ export const signOutAction = async () => {
   return redirect("/sign-in");
 };
 
+export const getEvents = async () => {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("Tests").select("*");
+  if (error) {
+    console.error(error.message);
+    return null;
+  }
+  return data;
+};
+
 export const saveEvent = async ({
   selectedDays,
   selectedTime,
