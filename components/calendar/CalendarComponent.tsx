@@ -17,7 +17,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
     <div className="h-full">
       <div
-        className={`absolute h-full inset-0 p-2 rounded ${event.color} text-xs z-40`}
+        className={`absolute h-full inset-0 p-2 rounded bg-blue-100 text-blue-700 border-blue-500 border text-xs z-40`}
         style={{ marginTop: `${minutes}px` }}
       >
         <div className="font-semibold">{event.title}</div>
@@ -82,12 +82,10 @@ export const CalendarComponent = () => {
   };
   useEffect(() => {
     const fetchData = async () => {
-      console.log("fetching data");
       const data = await getEvents();
       if (data) {
         const calendarEvents = generateCombinedEvents(data);
         setCalendarData(calendarEvents);
-        console.log(calendarEvents, data);
       }
     };
     fetchData();
@@ -150,7 +148,7 @@ export const CalendarComponent = () => {
           </div>
           <div className="flex items-center gap-2">
             <Button
-              className="bg-blue-700 text-white px-4 py-1 rounded-lg flex items-center gap-2"
+              className="bg-blue-700 text-white px-4 py-1  rounded-lg flex items-center gap-2 hover:bg-blue-900"
               onClick={() => setOpen(true)}
             >
               <span>+</span>
