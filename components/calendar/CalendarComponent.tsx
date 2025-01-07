@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Grid } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Grid } from "lucide-react";
 import { Button } from "../ui/button";
 import ScheduleDetailPopup from "../dialogs/Schedule";
 import {
@@ -16,11 +16,14 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
     <div className="h-full">
       <div
-        className={`absolute h-full inset-0 p-2 rounded ${event.color} text-xs z-50`}
+        className={`absolute h-full inset-0 p-2 rounded ${event.color} text-xs z-40`}
         style={{ marginTop: `${minutes}px` }}
       >
         <div className="font-semibold">{event.title}</div>
-        <div>{event.time}</div>
+        <div className="flex flex-row items-center">
+          <Clock size={12} />
+          <div className="ml-1">{event.time} PST</div>
+        </div>
       </div>
     </div>
   );
@@ -192,10 +195,14 @@ export const CalendarComponent = () => {
                 {weekDates.map((dateObj) => (
                   <div
                     key={dateObj.fullDate}
-                    className="p-2 text-sm border-r last:border-r-0"
+                    className="p-2 text-sm border-r last:border-r-0 flex-row items-center flex"
                   >
-                    <div className="font-medium">{dateObj.num}</div>
-                    <div className="text-gray-500">{dateObj.day}</div>
+                    <div className="font-medium w-min text-base">
+                      {dateObj.num}
+                    </div>
+                    <div className="ml-2 text-gray-500 w-min">
+                      {dateObj.day}
+                    </div>
                   </div>
                 ))}
               </div>
