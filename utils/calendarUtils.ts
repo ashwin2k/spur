@@ -73,7 +73,9 @@ const validateDateFormat = (date: string): void => {
   }
 };
 
-const generateRecurringEvents = (eventTemplate: EventTemplate) => {
+const generateRecurringEvents = (
+  eventTemplate: EventTemplate,
+): CalendarEvent[] => {
   // Input validation
   if (!eventTemplate || typeof eventTemplate !== "object") {
     throw new Error("Event template must be an object");
@@ -94,20 +96,24 @@ const generateRecurringEvents = (eventTemplate: EventTemplate) => {
 
   // Extract year and month from the template date
   const [year, month] = eventTemplate.date.split("-").map(Number);
+  const startDate = new Date(eventTemplate.date);
 
   // Get all dates for the specified weekdays in the month
   const dates: Date[] = [];
-  const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0).getDate();
 
   for (let day = 1; day <= lastDay; day++) {
     const currentDate = new Date(year, month - 1, day);
-    const dayName = currentDate.toLocaleString("en-US", {
-      weekday: "short",
-    }) as WeekDay;
 
-    if (eventTemplate.schedule.includes(dayName)) {
-      dates.push(currentDate);
+    // Only include dates that are on or after the start date
+    if (currentDate >= startDate) {
+      const dayName = currentDate.toLocaleString("en-US", {
+        weekday: "short",
+      }) as WeekDay;
+
+      if (eventTemplate.schedule.includes(dayName)) {
+        dates.push(currentDate);
+      }
     }
   }
 
@@ -119,6 +125,7 @@ const generateRecurringEvents = (eventTemplate: EventTemplate) => {
     color: "bg-blue-100 text-blue-700 border-blue-500 border",
   }));
 };
+
 const generateSingleEvent = (eventTemplate: EventTemplate): CalendarEvent => {
   if (!eventTemplate || typeof eventTemplate !== "object") {
     throw new Error("Event template must be an object");
