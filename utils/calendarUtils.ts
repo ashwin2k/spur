@@ -116,8 +116,7 @@ const generateRecurringEvents = (eventTemplate: EventTemplate) => {
     title: eventTemplate.title,
     date: date.toISOString().split("T")[0],
     time: eventTemplate.time || "11:00AM PST",
-    color:
-      eventTemplate.color || "bg-blue-100 text-blue-700 border-blue-500 border",
+    color: "bg-blue-100 text-blue-700 border-blue-500 border",
   }));
 };
 const generateSingleEvent = (eventTemplate: EventTemplate): CalendarEvent => {
@@ -131,8 +130,7 @@ const generateSingleEvent = (eventTemplate: EventTemplate): CalendarEvent => {
     title: eventTemplate.title,
     date: eventTemplate.date,
     time: eventTemplate.time || "11:00AM PST",
-    color:
-      eventTemplate.color || "bg-blue-100 text-blue-700 border-blue-500 border",
+    color: "bg-blue-100 text-blue-700 border-blue-500 border",
   };
 };
 

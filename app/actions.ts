@@ -164,10 +164,6 @@ export const saveEvent = async ({
     schedule: selectedDays,
     time: selectedTime,
     date: date,
-    color:
-      selectedSuite === "Demo Suite"
-        ? "bg-green-100 text-green-700 border-blue-500 border"
-        : "bg-blue-100 text-blue-700 border-blue-500 border",
   });
   if (res.status == 201) {
     return randomIntUUID;

@@ -23,6 +23,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Calendar } from "../ui/calendar";
 import { saveEvent } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
+import { CircleX } from "lucide-react";
 
 const ScheduleDetailPopup = ({
   open,
@@ -60,7 +61,7 @@ const ScheduleDetailPopup = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="min-w-[640px] rounded-xl">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-lg font-medium">
@@ -84,7 +85,7 @@ const ScheduleDetailPopup = ({
               </SelectContent>
             </Select>
           </div>
-          <div className="rounded-xl bg-gray-100 p-4 border">
+          <div className="rounded-xl bg-gray-50 p-4 border">
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
                 Start Date and Time
@@ -119,21 +120,25 @@ const ScheduleDetailPopup = ({
                 <label className="text-sm font-medium text-gray-700">
                   Run Weekly on Every
                 </label>
-                <Button variant={"ghost"} className="text-sm">
-                  <u>Custom interval</u>
+                <Button variant={"ghost"} className="text-sm text-gray-400">
+                  <u>Custom Interval</u>
                 </Button>
               </div>
               <div className="flex">
                 <ToggleGroup
                   type="multiple"
                   value={selectedDays}
+                  className="gap-0 w-full flex "
                   onValueChange={(v) => setSelectedDays(v)}
                 >
-                  {weekDays.map((day) => (
+                  {weekDays.map((day, idx) => (
                     <ToggleGroupItem
                       key={day}
                       value={day}
-                      className="px-4 border py-1 rounded-md text-sm font-medium data-[state=on]:bg-blue-600 data-[state=on]:text-white bg-white text-gray-600"
+                      className={`border flex-grow px-4 py-1 rounded-none text-sm font-medium data-[state=on]:bg-blue-700 data-[state=on]:text-white bg-white text-gray-600
+                      ${idx === 0 ? "rounded-l-lg" : ""}
+                       ${idx === weekDays.length - 1 ? "rounded-r-lg" : ""}
+                      `}
                     >
                       {day}
                     </ToggleGroupItem>
@@ -145,19 +150,22 @@ const ScheduleDetailPopup = ({
         </div>
 
         <DialogFooter className="flex justify-start w-full mt-6">
-          <Button
-            variant="ghost"
-            className="text-red-600 hover:text-red-700"
-            onClick={() => setOpen(false)}
-          >
-            Cancel Schedule
-          </Button>
-          <Button
-            className="bg-blue-600 text-white hover:bg-blue-700"
-            onClick={saveChanges}
-          >
-            Save Changes
-          </Button>
+          <div className="flex flex-row w-full">
+            <Button
+              variant="outline"
+              className="w-full rounded-lg text-red-600 hover:text-red-700 mr-4"
+              onClick={() => setOpen(false)}
+            >
+              <CircleX />
+              Cancel Schedule
+            </Button>
+            <Button
+              className="w-full bg-blue-700 text-white hover:bg-blue-800"
+              onClick={saveChanges}
+            >
+              Save Changes
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

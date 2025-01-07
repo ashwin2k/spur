@@ -147,15 +147,15 @@ export const CalendarComponent = () => {
           <div className="flex items-center justify-between mb-4">
             <div className="text-xl font-semibold">Scheduled Suites</div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Button
-              className="bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              className="bg-blue-700 text-white px-4 py-1 rounded-lg flex items-center gap-2"
               onClick={() => setOpen(true)}
             >
               <span>+</span>
               <span>Schedule Test</span>
             </Button>
-            <div className="flex items-center gap-2 rounded-lg shadow px-4 py-2 border">
+            <div className="flex items-center gap-2 rounded-lg px-4 py-2.5 border">
               <ChevronLeft
                 className="w-5 h-5 cursor-pointer"
                 onClick={() => navigateWeek("prev")}
