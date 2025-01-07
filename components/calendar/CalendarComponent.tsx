@@ -11,6 +11,7 @@ import {
   generateCombinedEvents,
 } from "../../utils/calendarUtils";
 import { getEvents } from "@/app/actions";
+import ToggleSwitch from "./ToggleSwitch";
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const minutes = event.time.split(" ")[0].split(":")[1];
   return (
@@ -142,7 +143,7 @@ export const CalendarComponent = () => {
       `}</style>
       <ScheduleDetailPopup open={open} setOpen={setOpen} />
       <div className="flex flex-col w-full h-full">
-        <div className="w-full h-16 border-b"></div>
+        <div className="w-full h-32 border-b"></div>
         <div className="w-full max-w-6xl mx-auto p-4 bg-white">
           <div className="flex items-center justify-between mb-4">
             <div className="text-xl font-semibold">Scheduled Suites</div>
@@ -169,7 +170,7 @@ export const CalendarComponent = () => {
               />
             </div>
             <div className="flex gap-2 w-full justify-end">
-              <Grid className="w-5 h-5" />
+              <ToggleSwitch />
             </div>
           </div>
         </div>
@@ -187,7 +188,7 @@ export const CalendarComponent = () => {
               </div>
             ))}
           </div>
-          <div className="rounded flex-grow">
+          <div className=" flex-grow border rounded-lg h-fit">
             <div className="sticky top-0 z-50 border-b">
               <div
                 className={`grid grid-cols-7 rounded-t-lg bg-gray-100 ${getSlideClass()}`}
