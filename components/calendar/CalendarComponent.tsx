@@ -8,6 +8,7 @@ import {
   hours,
   convertTo24Hour,
   generateMultipleRecurringEvents,
+  generateCombinedEvents,
 } from "../../utils/calendarUtils";
 import { getEvents } from "@/app/actions";
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
@@ -44,8 +45,9 @@ export const CalendarComponent = () => {
   const getEventsForTimeSlot = (
     date: string,
     hourBlock: number,
+    data: CalendarEvent[],
   ): CalendarEvent[] => {
-    return calendarData.filter((event) => {
+    return data.filter((event) => {
       const eventHour = convertTo24Hour(event.time);
       return event.date === date && eventHour === hourBlock;
     });
@@ -79,11 +81,10 @@ export const CalendarComponent = () => {
       console.log("fetching data");
       const data = await getEvents();
       if (data) {
-        const calendarEvents = generateMultipleRecurringEvents(data);
-        console.log(calendarEvents);
+        const calendarEvents = generateCombinedEvents(data);
         setCalendarData(calendarEvents);
+        console.log(calendarEvents, data);
       }
-      console.log(data);
     };
     fetchData();
   }, [open]);
@@ -207,11 +208,13 @@ export const CalendarComponent = () => {
                       key={`${dateObj.fullDate}-${hour24}`}
                       className="relative border h-16"
                     >
-                      {getEventsForTimeSlot(dateObj.fullDate, hour24).map(
-                        (event, i) => (
-                          <EventCard key={i} event={event} />
-                        ),
-                      )}
+                      {getEventsForTimeSlot(
+                        dateObj.fullDate,
+                        hour24,
+                        calendarData,
+                      ).map((event, i) => (
+                        <EventCard key={i} event={event} />
+                      ))}
                     </div>
                   ))}
                 </div>

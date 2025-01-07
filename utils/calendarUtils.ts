@@ -119,6 +119,20 @@ const generateRecurringEvents = (eventTemplate: EventTemplate) => {
     color: eventTemplate.color || "bg-blue-100 text-blue-700",
   }));
 };
+const generateSingleEvent = (eventTemplate: EventTemplate): CalendarEvent => {
+  if (!eventTemplate || typeof eventTemplate !== "object") {
+    throw new Error("Event template must be an object");
+  }
+
+  validateDateFormat(eventTemplate.date);
+
+  return {
+    title: eventTemplate.title,
+    date: eventTemplate.date,
+    time: eventTemplate.time || "11:00AM PST",
+    color: eventTemplate.color || "bg-blue-100 text-blue-700",
+  };
+};
 
 export const generateMultipleRecurringEvents = (templates: EventTemplate[]) => {
   if (!Array.isArray(templates)) {
@@ -131,6 +145,48 @@ export const generateMultipleRecurringEvents = (templates: EventTemplate[]) => {
       const events = generateRecurringEvents(template);
       return [...allEvents, ...events];
     }, []);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error processing templates: ${error.message}`);
+    }
+    throw error;
+  }
+};
+export const generateCombinedEvents = (
+  templates: EventTemplate[],
+): CalendarEvent[] => {
+  if (!Array.isArray(templates)) {
+    throw new Error("Templates parameter must be an array");
+  }
+
+  try {
+    // Create a Map to store events by date+time to prevent duplicates
+    const eventMap = new Map<string, CalendarEvent>();
+
+    templates.forEach((template) => {
+      // Generate single event first
+      const singleEvent = generateSingleEvent(template);
+      const singleEventKey = `${singleEvent.date}-${singleEvent.time}-${singleEvent.title}`;
+      eventMap.set(singleEventKey, singleEvent);
+
+      // Generate recurring events if schedule exists
+      if (template.schedule) {
+        const recurringEvents = generateRecurringEvents(template);
+        recurringEvents.forEach((event) => {
+          const eventKey = `${event.date}-${event.time}-${event.title}`;
+          // Only add if it's not already present
+          if (!eventMap.has(eventKey)) {
+            eventMap.set(eventKey, event);
+          }
+        });
+      }
+    });
+
+    // Convert Map values to array and sort by date and time
+    return Array.from(eventMap.values()).sort((a, b) => {
+      const dateCompare = a.date.localeCompare(b.date);
+      return dateCompare !== 0 ? dateCompare : a.time.localeCompare(b.time);
+    });
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Error processing templates: ${error.message}`);

@@ -126,6 +126,7 @@ const ScheduleDetailPopup = ({
               <div className="flex">
                 <ToggleGroup
                   type="multiple"
+                  value={selectedDays}
                   onValueChange={(v) => setSelectedDays(v)}
                 >
                   {weekDays.map((day) => (
