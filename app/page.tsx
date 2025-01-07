@@ -1,16 +1,16 @@
-import Hero from "@/components/hero";
-import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
-import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+"use client";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 export default async function Home() {
   return (
-    <>
-      <Hero />
-      <main className="flex-1 flex flex-col gap-6 px-4">
-        <h2 className="font-medium text-xl mb-4">Next steps</h2>
-        {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-      </main>
-    </>
+    <ResizablePanelGroup direction="horizontal" className="h-full">
+      <ResizablePanel defaultSize={24} className="bg-gray-100"></ResizablePanel>
+      <ResizableHandle />
+      <ResizablePanel></ResizablePanel>
+    </ResizablePanelGroup>
   );
 }
