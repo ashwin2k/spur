@@ -182,7 +182,7 @@ export const CalendarComponent = () => {
             {hours.map(({ display }) => (
               <div
                 key={display}
-                className="h-16 text-sm text-gray-500 flex items-center"
+                className="h-14 text-sm text-gray-500 flex items-center"
               >
                 {display}
               </div>
@@ -214,7 +214,7 @@ export const CalendarComponent = () => {
                   {weekDates.map((dateObj) => (
                     <div
                       key={`${dateObj.fullDate}-${hour24}`}
-                      className="relative border h-16"
+                      className="relative border h-14"
                     >
                       {getEventsForTimeSlot(
                         dateObj.fullDate,
