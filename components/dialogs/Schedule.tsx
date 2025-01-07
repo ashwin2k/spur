@@ -18,9 +18,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Calendar } from "../ui/calendar";
 
 const ScheduleDetailPopup = ({
   open,
@@ -30,7 +31,7 @@ const ScheduleDetailPopup = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [selectedSuite, setSelectedSuite] = useState("Demo Suite");
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Sat"];
 
@@ -65,10 +66,27 @@ const ScheduleDetailPopup = ({
               <label className="text-sm font-medium text-gray-700">
                 Start Date and Time
               </label>
-              <div className="flex items-center border rounded-md p-2 bg-white">
-                <span className="text-sm text-gray-600">
-                  10/10/24 at 7:00 AM PST
-                </span>
+              <div className="flex flex-row w-full">
+                <div className="flex items-center border rounded-md p-2 bg-white w-1/2">
+                  <Popover>
+                    <PopoverTrigger className="text-sm text-gray-600">
+                      {date?.toLocaleDateString()}
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <input
+                  type="time"
+                  defaultValue="07:00"
+                  className="text-gray-600 ml-2 w-1/2 rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 bg-white focus:ring-blue-500"
+                />
               </div>
             </div>
 
@@ -85,11 +103,11 @@ const ScheduleDetailPopup = ({
                 <ToggleGroup type="multiple">
                   {weekDays.map((day) => (
                     <ToggleGroupItem
-                    key={day}
-                    value={day}
-                    className="px-4 border py-1 rounded-md text-sm font-medium data-[state=on]:bg-blue-600 data-[state=on]:text-white bg-white text-gray-600"
+                      key={day}
+                      value={day}
+                      className="px-4 border py-1 rounded-md text-sm font-medium data-[state=on]:bg-blue-600 data-[state=on]:text-white bg-white text-gray-600"
                     >
-                    {day}
+                      {day}
                     </ToggleGroupItem>
                   ))}
                 </ToggleGroup>
