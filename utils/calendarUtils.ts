@@ -54,3 +54,87 @@ export const hours: Array<{ display: string; hour24: number }> = [
   { display: "11 PM", hour24: 23 },
   { display: "12 AM", hour24: 0 },
 ];
+
+// Mapping of weekdays to their numerical values
+const WEEKDAYS: Record<WeekDay, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+};
+
+const validateDateFormat = (date: string): void => {
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(date)) {
+    throw new Error("Date must be in YYYY-MM-DD format");
+  }
+};
+
+const generateRecurringEvents = (eventTemplate: EventTemplate) => {
+  // Input validation
+  if (!eventTemplate || typeof eventTemplate !== "object") {
+    throw new Error("Event template must be an object");
+  }
+
+  if (!Array.isArray(eventTemplate.schedule)) {
+    throw new Error("Schedule must be an array of weekdays");
+  }
+
+  validateDateFormat(eventTemplate.date);
+
+  // Validate schedule days
+  eventTemplate.schedule.forEach((day) => {
+    if (!(day in WEEKDAYS)) {
+      throw new Error(`Invalid day in schedule: ${day}`);
+    }
+  });
+
+  // Extract year and month from the template date
+  const [year, month] = eventTemplate.date.split("-").map(Number);
+
+  // Get all dates for the specified weekdays in the month
+  const dates: Date[] = [];
+  const firstDay = new Date(year, month - 1, 1);
+  const lastDay = new Date(year, month, 0).getDate();
+
+  for (let day = 1; day <= lastDay; day++) {
+    const currentDate = new Date(year, month - 1, day);
+    const dayName = currentDate.toLocaleString("en-US", {
+      weekday: "short",
+    }) as WeekDay;
+
+    if (eventTemplate.schedule.includes(dayName)) {
+      dates.push(currentDate);
+    }
+  }
+
+  // Generate event objects for each date
+  return dates.map((date) => ({
+    title: eventTemplate.title,
+    date: date.toISOString().split("T")[0],
+    time: eventTemplate.time || "11:00AM PST",
+    color: eventTemplate.color || "bg-blue-100 text-blue-700",
+  }));
+};
+
+export const generateMultipleRecurringEvents = (templates: EventTemplate[]) => {
+  if (!Array.isArray(templates)) {
+    throw new Error("Templates parameter must be an array");
+  }
+
+  // Map through all templates and flatten the results
+  try {
+    return templates.reduce<CalendarEvent[]>((allEvents, template) => {
+      const events = generateRecurringEvents(template);
+      return [...allEvents, ...events];
+    }, []);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error processing templates: ${error.message}`);
+    }
+    throw error;
+  }
+};

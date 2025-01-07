@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Grid } from "lucide-react";
 import { Button } from "../ui/button";
 import ScheduleDetailPopup from "../dialogs/Schedule";
@@ -7,7 +7,9 @@ import {
   getWeekDates,
   hours,
   convertTo24Hour,
+  generateMultipleRecurringEvents,
 } from "../../utils/calendarUtils";
+import { getEvents } from "@/app/actions";
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const minutes = event.time.split(" ")[0].split(":")[1];
   return (
@@ -33,22 +35,8 @@ const formatWeekLabel = (date: Date) => {
 };
 
 export const CalendarComponent = () => {
-  const dummyData: CalendarEvent[] = [
-    {
-      title: "Demo Suite",
-      date: "2025-01-01",
-      time: "11:00AM PST",
-      color: "bg-blue-100 text-blue-700",
-    },
-    {
-      title: "Test Suite",
-      date: "2024-10-13",
-      time: "8:00AM PST",
-      color: "bg-blue-100 text-blue-700",
-    },
-  ];
-
-  const [open, setOpen] = useState(true);
+  const [calendarData, setCalendarData] = useState<CalendarEvent[]>([]);
+  const [open, setOpen] = useState(false);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(
     null,
@@ -57,7 +45,7 @@ export const CalendarComponent = () => {
     date: string,
     hourBlock: number,
   ): CalendarEvent[] => {
-    return dummyData.filter((event) => {
+    return calendarData.filter((event) => {
       const eventHour = convertTo24Hour(event.time);
       return event.date === date && eventHour === hourBlock;
     });
@@ -86,6 +74,19 @@ export const CalendarComponent = () => {
         return "";
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("fetching data");
+      const data = await getEvents();
+      if (data) {
+        const calendarEvents = generateMultipleRecurringEvents(data);
+        console.log(calendarEvents);
+        setCalendarData(calendarEvents);
+      }
+      console.log(data);
+    };
+    fetchData();
+  }, [open]);
   return (
     <>
       <style jsx global>{`

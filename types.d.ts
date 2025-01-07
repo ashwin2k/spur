@@ -14,3 +14,15 @@ interface WeekDate {
 interface EventCardProps {
   event: CalendarEvent;
 }
+
+type WeekDay = "Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat";
+
+// Interface for the input event template
+interface EventTemplate {
+  id?: number;
+  title: string;
+  date: string;
+  time: string;
+  color: string | null;
+  schedule: WeekDay[];
+}
