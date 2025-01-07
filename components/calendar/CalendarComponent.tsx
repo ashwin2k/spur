@@ -19,7 +19,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <div
         className={`absolute h-full inset-0 p-2 rounded bg-blue-100 text-blue-700 border-blue-500 border text-xs z-40`}
         style={{ marginTop: `${minutes}px` }}
-      >
+      > 
         <div className="font-semibold">{event.title}</div>
         <div className="flex flex-row items-center">
           <Clock size={12} />
