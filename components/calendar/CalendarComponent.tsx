@@ -4,12 +4,21 @@ import { ChevronLeft, ChevronRight, Grid } from "lucide-react";
 import { Button } from "../ui/button";
 import ScheduleDetailPopup from "../dialogs/Schedule";
 
-const EventCard: React.FC<EventCardProps> = ({ event }) => (
-  <div className={`absolute inset-0 m-1 p-2 rounded ${event.color} text-xs`}>
-    <div className="font-semibold">{event.title}</div>
-    <div>{event.time}</div>
-  </div>
-);
+const EventCard: React.FC<EventCardProps> = ({ event }) => {
+  console.log(event);
+  const minutes = event.time.split(" ")[0].split(":")[1];
+  return (
+    <div className="h-full">
+      <div
+        className={`absolute h-full inset-0 p-2 rounded ${event.color} text-xs z-50`}
+        style={{ marginTop: `${minutes}px` }}
+      >
+        <div className="font-semibold">{event.title}</div>
+        <div>{event.time}</div>
+      </div>
+    </div>
+  );
+};
 
 const formatWeekLabel = (date: Date) => {
   const formatter = new Intl.DateTimeFormat("en-US", {
@@ -24,7 +33,7 @@ export const CalendarComponent = () => {
   const dummyData: CalendarEvent[] = [
     {
       title: "Demo Suite",
-      date: "2024-10-10",
+      date: "2025-01-01",
       time: "11:00AM PST",
       color: "bg-blue-100 text-blue-700",
     },
@@ -96,7 +105,15 @@ export const CalendarComponent = () => {
   const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(
     null,
   );
-
+  const getEventsForTimeSlot = (
+    date: string,
+    hourBlock: number,
+  ): CalendarEvent[] => {
+    return dummyData.filter((event) => {
+      const eventHour = convertTo24Hour(event.time);
+      return event.date === date && eventHour === hourBlock;
+    });
+  };
   const weekDates = getWeekDates(currentDate);
   const navigateWeek = (direction: "prev" | "next"): void => {
     setSlideDirection(direction === "next" ? "left" : "right");
@@ -178,7 +195,10 @@ export const CalendarComponent = () => {
             <div className="text-xl font-semibold">Scheduled Suites</div>
           </div>
           <div className="flex items-center gap-4">
-            <Button className="bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+            <Button
+              className="bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              onClick={() => setOpen(true)}
+            >
               <span>+</span>
               <span>Schedule Test</span>
             </Button>
@@ -237,7 +257,13 @@ export const CalendarComponent = () => {
                     <div
                       key={`${dateObj.fullDate}-${hour24}`}
                       className="relative border h-16"
-                    ></div>
+                    >
+                      {getEventsForTimeSlot(dateObj.fullDate, hour24).map(
+                        (event, i) => (
+                          <EventCard key={i} event={event} />
+                        ),
+                      )}
+                    </div>
                   ))}
                 </div>
               ))}

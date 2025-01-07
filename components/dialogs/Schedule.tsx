@@ -32,9 +32,10 @@ const ScheduleDetailPopup = ({
 }) => {
   const [selectedSuite, setSelectedSuite] = useState("Demo Suite");
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Sat"];
-
+  const saveChanges = () => {
+    setOpen(false);
+  };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
@@ -126,7 +127,7 @@ const ScheduleDetailPopup = ({
           </Button>
           <Button
             className="bg-blue-600 text-white hover:bg-blue-700"
-            onClick={() => setOpen(false)}
+            onClick={saveChanges}
           >
             Save Changes
           </Button>
