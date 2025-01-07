@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 import ScheduleDetailPopup from "../dialogs/Schedule";
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
-  console.log(event);
   const minutes = event.time.split(" ")[0].split(":")[1];
   return (
     <div className="h-full">
@@ -38,7 +37,7 @@ export const CalendarComponent = () => {
       color: "bg-blue-100 text-blue-700",
     },
     {
-      title: "Authentication",
+      title: "Test Suite",
       date: "2024-10-13",
       time: "8:00AM PST",
       color: "bg-blue-100 text-blue-700",

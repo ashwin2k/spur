@@ -19,9 +19,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Calendar } from "../ui/calendar";
+import { saveEvent } from "@/app/actions";
+import { useToast } from "@/hooks/use-toast";
 
 const ScheduleDetailPopup = ({
   open,
@@ -31,11 +32,32 @@ const ScheduleDetailPopup = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [selectedSuite, setSelectedSuite] = useState("Demo Suite");
+  const [selectedTime, setSelectedTime] = useState("07:00");
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Sat"];
-  const saveChanges = () => {
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
+  const { toast } = useToast();
+  const saveChanges = async () => {
+    console.log(selectedDays, date, selectedTime, selectedSuite);
+    const saveResult = await saveEvent({
+      selectedDays,
+      selectedTime,
+      date,
+      selectedSuite,
+    });
+    if (saveResult) {
+      toast({
+        title: "Added event successfully!",
+      });
+    } else {
+      toast({
+        title: "Error adding event!",
+        variant: "destructive",
+      });
+    }
     setOpen(false);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
@@ -85,7 +107,8 @@ const ScheduleDetailPopup = ({
                 </div>
                 <input
                   type="time"
-                  defaultValue="07:00"
+                  onChange={(e) => setSelectedTime(e.target.value)}
+                  defaultValue={selectedTime}
                   className="text-gray-600 ml-2 w-1/2 rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 bg-white focus:ring-blue-500"
                 />
               </div>
@@ -101,7 +124,10 @@ const ScheduleDetailPopup = ({
                 </Button>
               </div>
               <div className="flex">
-                <ToggleGroup type="multiple">
+                <ToggleGroup
+                  type="multiple"
+                  onValueChange={(v) => setSelectedDays(v)}
+                >
                   {weekDays.map((day) => (
                     <ToggleGroupItem
                       key={day}

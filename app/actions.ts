@@ -132,3 +132,31 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const saveEvent = async ({
+  selectedDays,
+  selectedTime,
+  date,
+  selectedSuite,
+}: {
+  selectedDays: string[];
+  selectedTime: string;
+  date: Date | undefined;
+  selectedSuite: string;
+}) => {
+  const supabase = await createClient();
+  const randomIntUUID = BigInt("0x" + crypto.randomUUID().replace(/-/g, ""))
+    .toString()
+    .substring(0, 10);
+  const res = await supabase.from("Tests").insert({
+    id: randomIntUUID,
+    title: selectedSuite,
+    schedule: selectedDays,
+    time: selectedTime,
+    date: date,
+  });
+  if (res.status == 201) {
+    return randomIntUUID;
+  }
+  return null;
+};
