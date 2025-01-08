@@ -3,6 +3,7 @@
 > Make sure node is installed. Or else use a node manager like NVM.
 
 ### Stack Used:
+
 - Supabase
 - Next JS
 - Tailwind
@@ -29,11 +30,13 @@
 - API Routes are server logic is present in `app/`. This is where we interact with Supabase too!
 
 ## Limitations:
-   - Cannot go to a specific week in the UI.
-   - No logs of tests ran (useful when debugging for the dev team)
+
+- Cannot go to a specific week in the UI.
+- No logs of tests ran (useful when debugging for the dev team)
 
 ## Additional Functionalities needed:
-   - 'Test History' - to see what tests are ran.
-   - Delete event/test suite
-   - Github integrations (Schedule test on push)
-   - Email notifications
+
+- 'Test History' - to see what tests are ran.
+- Delete event/test suite
+- Github integrations (Schedule test on push)
+- Email notifications
