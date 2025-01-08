@@ -14,3 +14,10 @@
    Make sure you replace `<SUPABASE_URL>` `<ANON_KEY>` with the variables in https://supabase.com/dashboard
 
 4. Run `npm run dev`
+
+## Folder Structure
+
+- I used the standard structure used by `create-next-app` (also recommended by next JS)
+- The components are arranged inside the `components/` folder, and the types are arranged in `types.d.ts` file
+- Additional styles for animation is arranged in `styles/` folder.
+- API Routes are server logic is present in `app/`. This is where we interact with Supabase too!
