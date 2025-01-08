@@ -9,7 +9,7 @@
 - Tailwind
 - ShadCN UI
 
-1. In order to install the app, run `npm install`.
+1. In order to install the app, run `npm install` (or with `npm install --force`).
 2. Create a Supabase account in https://supabase.com/
 3. Create a `.env.local` file and add the following
 
