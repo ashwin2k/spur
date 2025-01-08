@@ -1,17 +1,18 @@
 export const getWeekDates = (date: Date): WeekDate[] => {
   const week: WeekDate[] = [];
   const firstDayOfWeek = new Date(date);
+  // Adjust to start from Sunday (or any other day, like Monday)
   firstDayOfWeek.setDate(date.getDate() - date.getDay());
 
   for (let i = 0; i < 7; i++) {
-    const currentDay = new Date(firstDayOfWeek);
-    currentDay.setDate(firstDayOfWeek.getDate() + i);
+    const currentDay = new Date(firstDayOfWeek); // Create a new date based on firstDayOfWeek
+    currentDay.setDate(firstDayOfWeek.getDate() + i); // Adjust the day
     week.push({
       num: currentDay.getDate(),
       day: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
         currentDay,
       ),
-      fullDate: currentDay.toISOString().split("T")[0],
+      fullDate: formatDate(currentDay), // Extract only the date part
     });
   }
   return week;
@@ -201,3 +202,11 @@ export const generateCombinedEvents = (
     throw error;
   }
 };
+
+export function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
