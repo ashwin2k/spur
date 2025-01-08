@@ -1,17 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Clock, Grid } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import ScheduleDetailPopup from "../dialogs/Schedule";
 import {
   getWeekDates,
   hours,
   convertTo24Hour,
-  generateMultipleRecurringEvents,
   generateCombinedEvents,
 } from "../../utils/calendarUtils";
 import { getEvents } from "@/app/actions";
 import ToggleSwitch from "./ToggleSwitch";
+import "../../styles/calendar.css"; // Import the external CSS file
+
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const minutes = event.time.split(" ")[0].split(":")[1];
   return (
@@ -92,53 +93,6 @@ export const CalendarComponent = () => {
   }, [open]);
   return (
     <>
-      <style jsx global>{`
-        @keyframes slideLeft {
-          0% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-          50% {
-            transform: translateX(-10%);
-            opacity: 0;
-          }
-          51% {
-            transform: translateX(10%);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        @keyframes slideRight {
-          0% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-          50% {
-            transform: translateX(10%);
-            opacity: 0;
-          }
-          51% {
-            transform: translateX(-10%);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        .animate-slide-left {
-          animation: slideLeft 300ms ease-in-out;
-        }
-
-        .animate-slide-right {
-          animation: slideRight 300ms ease-in-out;
-        }
-      `}</style>
       <ScheduleDetailPopup open={open} setOpen={setOpen} />
       <div className="flex flex-col w-full h-full">
         <div className="w-full h-32 border-b"></div>
